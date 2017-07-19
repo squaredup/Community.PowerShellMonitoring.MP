@@ -1,0 +1,194 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+      <DataSourceModuleType ID="Community.PowerShellMonitoring.DataSource.PowerShellPerformance" Accessibility="Public" Batching="false">
+        <Configuration>
+          <IncludeSchemaTypes>            
+            <SchemaType>System!System.ExpressionEvaluatorSchema</SchemaType>            
+          </IncludeSchemaTypes>
+          <xsd:element name="IntervalSeconds" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element name="SyncTime" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element name="ScriptName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element name="Arguments" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element name="ScriptBody" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element name="TimeoutSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />          
+          <xsd:element name="ObjectName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element name="CounterName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element name="InstanceName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <xsd:element name="Value" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SyncTime" Selector="$Config/SyncTime$" ParameterType="string" />
+          <OverrideableParameter ID="Arguments" Selector="$Config/Arguments$" ParameterType="string" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+        </OverrideableParameters>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="Timer" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <SyncTime>$Config/SyncTime$</SyncTime>
+              </DataSource>
+              <ProbeAction ID="Probe" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagTriggerOnlyProbe">
+                <ScriptName>$Config/ScriptName$</ScriptName>
+                <ScriptBody>$Config/ScriptBody$</ScriptBody>
+                <Parameters>
+                  <Parameter>
+                    <Name>Arguments</Name>
+                    <Value>$Config/Arguments$</Value>
+                  </Parameter>
+                </Parameters>
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              </ProbeAction>
+              <ConditionDetection TypeID="Perf!System.Performance.DataGenericMapper" ID="Mapper">
+                <ObjectName>$Config/ObjectName$</ObjectName>
+                <CounterName>$Config/CounterName$</CounterName>
+                <InstanceName>$Config/InstanceName$</InstanceName>
+                <Value>$Config/Value$</Value>
+              </ConditionDetection>
+            </MemberModules>
+            <Composition>
+              <Node ID="Mapper">
+                <Node ID="Probe" >
+                  <Node ID="Timer" />
+                </Node>
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>Perf!System.Performance.Data</OutputType>
+      </DataSourceModuleType>
+    </ModuleTypes>
+  </TypeDefinitions>
+  <PresentationTypes>
+    <UIPageSets>
+      <UIPageSet ID="Community.PowerShellMonitoring.PageSet.DataSource.PowerShellPerformance" TypeDefinitionID="Community.PowerShellMonitoring.DataSource.PowerShellPerformance">
+        <UIPageReferences>
+          <UIPageReference ID="Community.PowerShellMonitoring.Template.PowerShellRule.PerfCollection.Page.Schedule" PageID="System!System.SimpleSchedulerPage">
+            <InputParameters />
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="SimpleReccuringSchedule">
+                    <xsl:element name="Interval">
+                      <xsl:value-of select="IntervalSeconds" />
+                    </xsl:element>
+                    <xsl:if test="boolean(string-length(SyncTime))">
+                      <xsl:copy-of select="SyncTime" />
+                    </xsl:if>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+            <Title ID="Microsoft.Windows.ScriptBasedPerformancePageSet.Reference1.Title" />
+            <TabName ID="Microsoft.Windows.ScriptBasedPerformancePageSet.Reference1.TabName" />
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.Template.PowerShellRule.PerfCollection.Page.Script" PageID="Windows!Microsoft.Windows.ScriptPage">
+            <InputParameters />
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:copy-of select="/ScriptName" />
+                  <xsl:copy-of select="/Arguments" />
+                  <xsl:copy-of select="/ScriptBody" />
+                  <xsl:copy-of select="/TimeoutSeconds" />
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+            <Title ID="Microsoft.Windows.ScriptBasedPerformancePageSet.Reference2.Title" />
+            <TabName ID="Microsoft.Windows.ScriptBasedPerformancePageSet.Reference2.TabName" />
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.Template.PowerShellRule.PerfCollection.Page.PerfMapper" PageID="Windows!Microsoft.Windows.PerformanceMapperPage">
+            <InputParameters />
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:copy-of select="/ObjectName" />
+                  <xsl:copy-of select="/CounterName" />
+                  <xsl:copy-of select="/InstanceName" />
+                  <xsl:copy-of select="/Value" />
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+            <Title ID="Microsoft.Windows.ScriptBasedPerformancePageSet.Reference3.Title" />
+            <TabName ID="Microsoft.Windows.ScriptBasedPerformancePageSet.Reference3.TabName" />
+          </UIPageReference>
+        </UIPageReferences>
+        <OutputTransform>
+          <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+            <xsl:template match="/">
+              <xsl:element name="IntervalSeconds">
+                <xsl:variable name="RawInterval" select="/SimpleReccuringSchedule/Interval" />
+                <xsl:variable name="Units" select="/SimpleReccuringSchedule/Interval/@Unit" />
+                <xsl:choose>
+                  <xsl:when test="not(boolean($Units)) or $Units='Seconds'">
+                    <xsl:value-of select="$RawInterval" />
+                  </xsl:when>
+                  <xsl:when test="$Units='Minutes'">
+                    <xsl:value-of select="$RawInterval*60" />
+                  </xsl:when>
+                  <xsl:when test="$Units='Hours'">
+                    <xsl:value-of select="$RawInterval*3600" />
+                  </xsl:when>
+                  <xsl:when test="$Units='Days'">
+                    <xsl:value-of select="$RawInterval*86400" />
+                  </xsl:when>
+                </xsl:choose>
+              </xsl:element>
+              <xsl:element name="SyncTime">
+                <xsl:value-of select="/SimpleReccuringSchedule/SyncTime" />
+              </xsl:element>
+              <xsl:element name="ScriptName">
+                <xsl:value-of select="/ScriptName[1]" />
+              </xsl:element>
+              <xsl:element name="Arguments">
+                <xsl:value-of select="/Arguments[1]" />
+              </xsl:element>
+              <xsl:element name="ScriptBody">
+                <xsl:value-of select="/ScriptBody[1]" />
+              </xsl:element>
+              <xsl:element name="TimeoutSeconds">
+                <xsl:value-of select="/TimeoutSeconds[1]" />
+              </xsl:element>
+              <xsl:copy-of select="/ObjectName" />
+              <xsl:copy-of select="/CounterName" />
+              <xsl:copy-of select="/InstanceName" />
+              <xsl:copy-of select="/Value" />
+            </xsl:template>
+          </xsl:stylesheet>
+        </OutputTransform>
+      </UIPageSet>
+    </UIPageSets>
+  </PresentationTypes>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring.DataSource.PowerShellPerformance">
+          <Name>PowerShell Script (Community)</Name>
+          <Description>Collect and store performance data gathered by running a PowerShell script.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.DataSource.PowerShellPerformance" SubElementID="Arguments">
+          <Name>Arguments</Name>
+          <Description>Arguments passed to the script as a string.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.DataSource.PowerShellPerformance" SubElementID="IntervalSeconds">
+          <Name>Interval (Seconds)</Name>
+          <Description>The number of seconds between performance sample collection.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.DataSource.PowerShellPerformance" SubElementID="SyncTime">
+          <Name>Sync Time (hh:mm)</Name>
+          <Description>The time at which this rules executions should be sychronised around.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.DataSource.PowerShellPerformance" SubElementID="TimeoutSeconds">
+          <Name>Timeout (Seconds)</Name>
+          <Description>The length of time the script has to complete before it is terminated.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

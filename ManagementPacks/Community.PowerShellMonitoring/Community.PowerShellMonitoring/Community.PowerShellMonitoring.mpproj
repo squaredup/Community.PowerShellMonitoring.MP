@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{d427ef49-813f-4d6e-be3c-7c802c0690b4}</ProjectGuid>
+    <RootNamespace>Community.PowerShellMonitoring</RootNamespace>
+    <Name>Community.PowerShellMonitoring</Name>
+    <ManagementPackName>Community.PowerShellMonitoring</ManagementPackName>
+    <Version>1.0.0.21</Version>
+    <MpFrameworkVersion>v7.0</MpFrameworkVersion>
+    <MpFrameworkProfile>OM</MpFrameworkProfile>
+    <ProductVersion>1.1.0.0</ProductVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <GenerateSealed>false</GenerateSealed>
+    <Company>Squared Up</Company>
+    <Copyright>Copyright (c) Squared Up. All rights reserved.</Copyright>
+    <DelaySigning>false</DelaySigning>
+    <AssemblyOriginatorKeyFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DelaySigning>False</DelaySigning>
+    <Company>Squared Up</Company>
+    <Copyright>Copyright (c) Squared Up. All rights reserved.</Copyright>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\..\..\PowerShellMonitoring.snk</AssemblyOriginatorKeyFile>
+    <GenerateSealed>True</GenerateSealed>
+  </PropertyGroup>
+  <ItemGroup>
+    <ManagementPackReference Include="Microsoft.SystemCenter.DataWarehouse.Library">      
+      <Alias>SCDW</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.Library">
+      <Alias>SC</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.RuleTemplates">
+      <HintPath>..\..\..\References\Microsoft.SystemCenter.RuleTemplates.mp</HintPath>
+      <Alias>MSR</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.TaskTemplates">
+      <HintPath>..\..\..\References\Microsoft.SystemCenter.TaskTemplates.mp</HintPath>
+      <Alias>MST</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.Library">
+      <Alias>Windows</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Health.Library">
+      <Alias>Health</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Library">
+      <Alias>System</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.Visualization.Library">
+      <Alias>Visualization</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Performance.Library">
+      <Alias>Perf</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Presentation" />
+    <Folder Include="Presentation\Folders" />
+    <Folder Include="Resources" />
+    <Folder Include="Resources\Scripts" />
+    <Folder Include="Type Library\Datasources" />
+    <Folder Include="Type Library\Templates" />
+    <Folder Include="Type Library\Probes" />
+    <Folder Include="Type Library\Write Actions" />
+    <Folder Include="Type Library" />
+    <Folder Include="Type Library\Unit Monitors" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ManagementPack.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Presentation\Folders\Folders.PowerShellMonitors.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Presentation\Folders\Folders.PowerShellRules.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Datasources\DataSource.PowerShell.FilteredPropertyBag.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Datasources\DataSource.PowerShellEvent.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Datasources\DataSource.PowerShellPerformance.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Probes\Probe.SimplePowerShellScript.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Templates\Template.PowerShellRule.Alert.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Templates\Template.PowerShellRule.EventCollection.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Templates\Template.PowerShellRule.EventTriggeredScript.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Templates\Template.PowerShellRule.PerfCollection.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Templates\Template.PowerShellRule.TimedScript.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Templates\Template.PowerShellTask.AgentTask.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Unit Monitors\UnitMonitor.PowerShellThreeState.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Unit Monitors\UnitMonitor.PowerShellTwoState.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Write Actions\WriteAction.PublishPerfProxy.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Type Library\Write Actions\WriteAction.SimplePowerShellScript.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Scripts\AlertRule.ps1" />
+    <EmbeddedResource Include="Resources\Scripts\EventCollection.ps1" />
+    <EmbeddedResource Include="Resources\Scripts\HealthState.ps1" />
+    <EmbeddedResource Include="Resources\Scripts\ParamOnly.ps1" />
+    <EmbeddedResource Include="Resources\Scripts\PerfCollection.ps1" />
+    <EmbeddedResource Include="Resources\Scripts\ReturnSingleValue.ps1" />
+    <EmbeddedResource Include="Resources\Scripts\ThreeHealthState.ps1" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VSAC\Microsoft.SystemCenter.OperationsManager.targets" />
+</Project>

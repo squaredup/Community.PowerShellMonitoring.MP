@@ -1,0 +1,209 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Templates>
+    <Template ID="Community.PowerShellMonitoring.Template.PowerShellRule.PerfCollection" Purpose="RuleCreation">
+      <Configuration>
+        <xsd:element name="ID" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Name" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Enabled" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Description" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Target" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Category" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="LocaleId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="IntervalSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="SyncTime" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="ScriptName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Arguments" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="ScriptBody" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="TimeoutSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="ObjectName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="CounterName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="InstanceName" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Value" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+      </Configuration>
+      <References>
+        <Reference ID="Self" />
+        <Reference ID="System" />
+        <Reference ID="Windows" />
+        <Reference ID="SC" />
+        <Reference ID="SCDW" />
+      </References>
+      <Implementation>
+        <Monitoring>
+          <Rules>
+            <Rule ID="$TemplateConfig/ID$" Target="$TemplateConfig/Target$" Enabled="$TemplateConfig/Enabled$">
+              <Category>$TemplateConfig/Category$</Category>
+              <DataSources>
+                <DataSource ID="DS" TypeID="$Reference/Self$Community.PowerShellMonitoring.DataSource.PowerShellPerformance">
+                  <IntervalSeconds>$TemplateConfig/IntervalSeconds$</IntervalSeconds>
+                  <SyncTime>$TemplateConfig/SyncTime$</SyncTime>
+                  <ScriptName>$TemplateConfig/ScriptName$</ScriptName>
+                  <Arguments>$TemplateConfig/Arguments$</Arguments>
+                  <ScriptBody>$TemplateConfig/ScriptBody$</ScriptBody>
+                  <TimeoutSeconds>$TemplateConfig/TimeoutSeconds$</TimeoutSeconds>
+                  <ObjectName>$TemplateConfig/ObjectName$</ObjectName>
+                  <CounterName>$TemplateConfig/CounterName$</CounterName>
+                  <InstanceName>$TemplateConfig/InstanceName$</InstanceName>
+                  <Value>$TemplateConfig/Value$</Value>
+                </DataSource>
+              </DataSources>
+              <WriteActions>
+                <WriteAction ID="WriteToDB" TypeID="$Reference/SC$Microsoft.SystemCenter.CollectPerformanceData" />
+                <WriteAction ID="WriteToDW" TypeID="$Reference/SCDW$Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" />
+              </WriteActions>
+            </Rule>
+          </Rules>
+        </Monitoring>
+        <LanguagePacks>
+          <LanguagePack ID="$TemplateConfig/LocaleId$" IsDefault="true">
+            <DisplayStrings>
+              <DisplayString ElementID="$TemplateConfig/ID$">
+                <Name>$TemplateConfig/Name$</Name>
+                <Description>$TemplateConfig/Description$</Description>
+              </DisplayString>
+            </DisplayStrings>
+          </LanguagePack>
+        </LanguagePacks>
+      </Implementation>
+    </Template>
+  </Templates>
+  <PresentationTypes>
+    <UIPageSets>
+      <UIPageSet ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellPerfCollection" TypeDefinitionID="Community.PowerShellMonitoring.Template.PowerShellRule.PerfCollection">
+        <UIPageReferences>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellPerfCollection.General" PageID="MSR!Microsoft.SystemCenter.RuleTemplates.RuleGeneralPage" Usage="CreationOnly">
+            <InputParameters />
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="Category">
+                    <xsl:copy>PerformanceCollection</xsl:copy>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellPerfCollection.Schedule" PageID="System!System.SimpleSchedulerPage" Usage="CreationOnly">
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="SimpleReccuringSchedule">
+                    <xsl:element name="Interval">
+                      <xsl:attribute name="Unit">Minutes</xsl:attribute>15
+                    </xsl:element>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellPerfCollection.Script" PageID="Windows!Microsoft.Windows.ScriptPage" Usage="CreationOnly">
+            <InputParameters>
+              <ScriptName>MyScript.ps1</ScriptName>
+              <ScriptBody>$IncludeFileContent/Resources/Scripts/PerfCollection.ps1$</ScriptBody>
+            </InputParameters>
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:copy-of select="/ScriptName" />
+                  <xsl:copy-of select="/Arguments" />
+                  <xsl:copy-of select="/ScriptBody" />
+                  <xsl:copy-of select="/TimeOutSeconds" />
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Microsoft.SystemCenter.RuleTemplates.ScriptPerfCollection.PageSet.PageReference4" PageID="Windows!Microsoft.Windows.PerformanceMapperPage" Usage="CreationOnly">
+            <InputParameters>
+              <ObjectName>MyObject</ObjectName>
+              <CounterName>MyCounter</CounterName>
+              <InstanceName>$Data/Property[@Name='Instance']$</InstanceName>
+              <Value>$Data/Property[@Name='Metric']$</Value>
+            </InputParameters>
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:copy-of select="/ObjectName" />
+                  <xsl:copy-of select="/CounterName" />
+                  <xsl:copy-of select="/InstanceName" />
+                  <xsl:copy-of select="/Value" />
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+        </UIPageReferences>
+        <OutputTransform>
+          <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+            <xsl:template match="/">
+              <xsl:element name="Configuration">
+                <xsl:copy-of select="/ID" />
+                <xsl:copy-of select="/Name" />
+                <xsl:copy-of select="/Enabled" />
+                <xsl:copy-of select="/Description" />
+                <xsl:copy-of select="/Target" />
+                <xsl:copy-of select="/Category" />
+                <xsl:copy-of select="/LocaleId" />
+                <xsl:element name="IntervalSeconds">
+                  <xsl:variable name="RawInterval" select="/SimpleReccuringSchedule/Interval" />
+                  <xsl:variable name="Units" select="/SimpleReccuringSchedule/Interval/@Unit" />
+                  <xsl:choose>
+                    <xsl:when test="not(boolean($Units)) or $Units='Seconds'">
+                      <xsl:value-of select="$RawInterval" />
+                    </xsl:when>
+                    <xsl:when test="$Units='Minutes'">
+                      <xsl:value-of select="$RawInterval*60" />
+                    </xsl:when>
+                    <xsl:when test="$Units='Hours'">
+                      <xsl:value-of select="$RawInterval*3600" />
+                    </xsl:when>
+                    <xsl:when test="$Units='Days'">
+                      <xsl:value-of select="$RawInterval*86400" />
+                    </xsl:when>
+                  </xsl:choose>
+                </xsl:element>
+                <xsl:element name="SyncTime">
+                  <xsl:value-of select="/SimpleReccuringSchedule/SyncTime" />
+                </xsl:element>
+                <xsl:element name="ScriptName">
+                  <xsl:value-of select="/ScriptName[1]" />
+                </xsl:element>
+                <xsl:element name="Arguments">
+                  <xsl:value-of select="/Arguments[1]" />
+                </xsl:element>
+                <xsl:element name="ScriptBody">
+                  <xsl:value-of select="/ScriptBody[1]" />
+                </xsl:element>
+                <xsl:element name="TimeoutSeconds">
+                  <xsl:value-of select="/TimeoutSeconds[1]" />
+                </xsl:element>
+                <xsl:copy-of select="/ObjectName" />
+                <xsl:copy-of select="/CounterName" />
+                <xsl:copy-of select="/InstanceName" />
+                <xsl:copy-of select="/Value" />
+              </xsl:element>
+            </xsl:template>
+          </xsl:stylesheet>
+        </OutputTransform>
+      </UIPageSet>
+    </UIPageSets>
+  </PresentationTypes>
+  <Presentation>
+    <FolderItems>
+      <FolderItem ID="Community.PowerShellMonitoring.FolderItem.Template.Rules.PowerShellPerf" ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.PerfCollection" Folder="MSR!Microsoft.SystemCenter.RuleTemplates.Folder.Collection.Performance" />
+      <FolderItem ID="Community.PowerShellMonitoring.FolderItem.Template.Rules.PowerShellPerf.PowerShellBased" ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.PerfCollection" Folder="Community.PowerShellMonitoring.Folders.Authoring.Rules.Collection.PowerShellBased"/>
+    </FolderItems>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.PerfCollection">
+          <Name>PowerShell Script Performance Collection Rule (Community)</Name>
+          <Description>Collect performance information generated by a PowerShell script.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

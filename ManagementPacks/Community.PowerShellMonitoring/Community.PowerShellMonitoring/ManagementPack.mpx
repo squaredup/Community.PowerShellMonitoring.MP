@@ -1,0 +1,31 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring">
+          <Name>PowerShell Monitoring - Community Management Pack</Name>
+          <Description>Allows you to create PowerShell monitors, rules and tasks using the SCOM consoles Authoring tab.</Description>
+        </DisplayString>
+      </DisplayStrings>
+      <KnowledgeArticles>
+        <KnowledgeArticle ElementID="Community.PowerShellMonitoring" Visible="true">
+          <MamlContent>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>Summary</maml:title>
+              <maml:para>Allows you to create PowerShell monitors, rules and tasks using the SCOM consoles Authoring tab.</maml:para>
+            </maml:section>
+            <maml:section xmlns:maml="http://schemas.microsoft.com/maml/2004/10">
+              <maml:title>External</maml:title>
+              <maml:para>
+                <maml:navigationLink>
+                  <maml:linkText>https://github.com/squaredup/Community.PowerShellMonitoring.MP</maml:linkText>
+                  <maml:uri href="https://github.com/squaredup/Community.PowerShellMonitoring.MP" />
+                </maml:navigationLink>
+              </maml:para>
+            </maml:section>
+          </MamlContent>
+        </KnowledgeArticle>
+      </KnowledgeArticles>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

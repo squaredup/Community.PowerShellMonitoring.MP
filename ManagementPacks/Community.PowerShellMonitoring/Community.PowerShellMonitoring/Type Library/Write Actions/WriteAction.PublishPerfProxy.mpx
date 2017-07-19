@@ -1,0 +1,30 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+      <WriteActionModuleType ID="Community.PowerShellMonitoring.WriteAction.PublishPerfProxy" Accessibility="Public" Batching="false" Comment="Unused, but work around to get VSAE to include the SCDW reference required for templates to function">
+        <Configuration />
+        <ModuleImplementation Isolation="Any">
+          <Composite>
+            <MemberModules>
+              <WriteAction TypeID="SCDW!Microsoft.SystemCenter.DataWarehouse.PublishPerformanceData" ID="WA" />
+            </MemberModules>
+            <Composition>
+              <Node ID="WA" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <InputType>Perf!System.Performance.Data</InputType>
+      </WriteActionModuleType>
+    </ModuleTypes>
+  </TypeDefinitions>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring.WriteAction.PublishPerfProxy">
+          <Name>Community PowerShell Monitoring Publish performance data proxy</Name>
+          <Description>Actually unecesary writeaction that is added to force VSAE to add a reference to the SCDW library MP as the templates depend on this and unless something directly references it the build process removes it.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

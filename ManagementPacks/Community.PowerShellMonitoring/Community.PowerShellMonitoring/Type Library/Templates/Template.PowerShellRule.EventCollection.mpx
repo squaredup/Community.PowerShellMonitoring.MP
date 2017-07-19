@@ -1,0 +1,235 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Templates>
+    <Template ID="Community.PowerShellMonitoring.Template.PowerShellRule.EventCollection" Purpose="RuleCreation">
+      <Configuration>
+        <IncludeSchemaTypes>
+          <SchemaType>System!System.ParamListSchema</SchemaType>
+        </IncludeSchemaTypes>
+        <xsd:element name="ID" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Name" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Enabled" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Description" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Target" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Category" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="LocaleId" type="xsd:string" />
+        <xsd:element name="IntervalSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="SyncTime" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="ScriptName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Arguments" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="ScriptBody" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="TimeoutSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="EventOriginId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="PublisherId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="PublisherName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Channel" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="LoggingComputer" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="EventNumber" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="EventCategory" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="EventLevel" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="UserName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />        
+        <xsd:element name="Params" type="ParamListType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+      </Configuration>
+      <References>
+        <Reference ID="Self" />
+        <Reference ID="System" />
+        <Reference ID="Windows" />
+        <Reference ID="SC" />
+        <Reference ID="SCDW" />
+      </References>
+      <Implementation>
+        <Monitoring>
+          <Rules>
+            <Rule ID="$TemplateConfig/ID$" Target="$TemplateConfig/Target$" Enabled="$TemplateConfig/Enabled$">
+              <Category>$TemplateConfig/Category$</Category>
+              <DataSources>
+                <DataSource ID="DS" TypeID="$Reference/Self$Community.PowerShellMonitoring.DataSource.PowerShellEvent">
+                  <IntervalSeconds>$TemplateConfig/IntervalSeconds$</IntervalSeconds>
+                  <SyncTime>$TemplateConfig/SyncTime$</SyncTime>
+                  <ScriptName>$TemplateConfig/ScriptName$</ScriptName>
+                  <Arguments>$TemplateConfig/Arguments$</Arguments>
+                  <ScriptBody>$TemplateConfig/ScriptBody$</ScriptBody>
+                  <TimeoutSeconds>$TemplateConfig/TimeoutSeconds$</TimeoutSeconds>
+                  <EventOriginId>$TemplateConfig/EventOriginId$</EventOriginId>
+                  <PublisherId>$TemplateConfig/PublisherId$</PublisherId>
+                  <PublisherName>$TemplateConfig/PublisherName$</PublisherName>
+                  <Channel>$TemplateConfig/Channel$</Channel>
+                  <LoggingComputer>$TemplateConfig/LoggingComputer$</LoggingComputer>
+                  <EventNumber>$TemplateConfig/EventNumber$</EventNumber>
+                  <EventCategory>$TemplateConfig/EventCategory$</EventCategory>
+                  <EventLevel>$TemplateConfig/EventLevel$</EventLevel>
+                  <UserName>$TemplateConfig/UserName$</UserName>
+                  <Description>$TemplateConfig/EventDescription$</Description>
+                  <Params>$TemplateConfig/Params$</Params>
+                </DataSource>
+              </DataSources>
+              <WriteActions>
+                <WriteAction ID="WriteToDB" TypeID="$Reference/SC$Microsoft.SystemCenter.CollectEvent" />
+                <WriteAction ID="WriteToDW" TypeID="$Reference/SCDW$Microsoft.SystemCenter.DataWarehouse.PublishEventData" />
+              </WriteActions>
+            </Rule>
+          </Rules>
+        </Monitoring>
+        <LanguagePacks>
+          <LanguagePack ID="$TemplateConfig/LocaleId$" IsDefault="true">
+            <DisplayStrings>
+              <DisplayString ElementID="$TemplateConfig/ID$">
+                <Name>$TemplateConfig/Name$</Name>
+                <Description>$TemplateConfig/Description$</Description>
+              </DisplayString>
+            </DisplayStrings>
+          </LanguagePack>
+        </LanguagePacks>
+      </Implementation>
+    </Template>
+  </Templates>  
+  <PresentationTypes>
+    <UIPageSets>
+      <UIPageSet ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellEventCollection" TypeDefinitionID="Community.PowerShellMonitoring.Template.PowerShellRule.EventCollection">
+        <UIPageReferences>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellEventCollection.General" PageID="MSR!Microsoft.SystemCenter.RuleTemplates.RuleGeneralPage" Usage="CreationOnly">
+            <InputParameters />
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="Category">
+                    <xsl:copy>EventCollection</xsl:copy>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellEventCollection.Schedule" PageID="System!System.SimpleSchedulerPage" Usage="CreationOnly">
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="SimpleReccuringSchedule">
+                    <xsl:element name="Interval">
+                      <xsl:attribute name="Unit">Minutes</xsl:attribute>15
+                    </xsl:element>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellEventCollection.Script" PageID="Windows!Microsoft.Windows.ScriptPage" Usage="CreationOnly">
+            <InputParameters>
+              <ScriptName>MyEventCollectionScript.ps1</ScriptName>
+              <ScriptBody>$IncludeFileContent/Resources/Scripts/EventCollection.ps1$</ScriptBody>
+            </InputParameters>
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:copy-of select="/ScriptName" />
+                  <xsl:copy-of select="/Arguments" />
+                  <xsl:copy-of select="/ScriptBody" />
+                  <xsl:copy-of select="/TimeOutSeconds" />
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellEventCollection.Mapper" PageID="Windows!Microsoft.Windows.EventMapperPage" Usage="CreationOnly">
+            <InputParameters>
+              <EventNumber>$Data/Property[@Name='EventID']$</EventNumber>
+              <PublisherName>CustomScript</PublisherName>
+              <Channel>CustomScript</Channel>
+              <EventCategory>0</EventCategory>
+              <Params>
+                <Param>$Data/Property[@Name='EventParam1']$</Param>
+                <Param>$Data/Property[@Name='EventParam2']$</Param>
+              </Params>
+            </InputParameters>
+            <InputTransform />
+            <Title ID="Title" />
+            <TabName ID="TabName" />
+          </UIPageReference>
+        </UIPageReferences>
+        <OutputTransform>
+          <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+            <xsl:template match="/">
+              <xsl:element name="Configuration">
+                <xsl:copy-of select="/ID" />
+                <xsl:copy-of select="/Name" />
+                <xsl:copy-of select="/Enabled" />
+                <xsl:copy-of select="/Description[1]" />
+                <xsl:copy-of select="/Target" />
+                <xsl:copy-of select="/Category" />
+                <xsl:copy-of select="/LocaleId" />
+                <xsl:element name="IntervalSeconds">
+                  <xsl:variable name="RawInterval" select="/SimpleReccuringSchedule/Interval" />
+                  <xsl:variable name="Units" select="/SimpleReccuringSchedule/Interval/@Unit" />
+                  <xsl:choose>
+                    <xsl:when test="not(boolean($Units)) or $Units='Seconds'">
+                      <xsl:value-of select="$RawInterval" />
+                    </xsl:when>
+                    <xsl:when test="$Units='Minutes'">
+                      <xsl:value-of select="$RawInterval*60" />
+                    </xsl:when>
+                    <xsl:when test="$Units='Hours'">
+                      <xsl:value-of select="$RawInterval*3600" />
+                    </xsl:when>
+                    <xsl:when test="$Units='Days'">
+                      <xsl:value-of select="$RawInterval*86400" />
+                    </xsl:when>
+                  </xsl:choose>
+                </xsl:element>
+                <xsl:element name="SyncTime">
+                  <xsl:value-of select="/SimpleReccuringSchedule/SyncTime" />
+                </xsl:element>
+                <xsl:element name="ScriptName">
+                  <xsl:value-of select="/ScriptName[1]" />
+                </xsl:element>
+                <xsl:element name="Arguments">
+                  <xsl:value-of select="/Arguments[1]" />
+                </xsl:element>
+                <xsl:element name="ScriptBody">
+                  <xsl:value-of select="/ScriptBody[1]" />
+                </xsl:element>
+                <xsl:element name="TimeoutSeconds">
+                  <xsl:value-of select="/TimeoutSeconds[1]" />
+                </xsl:element>
+                <xsl:copy-of select="/EventOriginId" />
+                <xsl:copy-of select="/PublisherId" />
+                <xsl:copy-of select="/PublisherName" />
+                <xsl:copy-of select="/Channel" />
+                <xsl:copy-of select="/LoggingComputer" />
+                <xsl:copy-of select="/EventNumber" />
+                <xsl:copy-of select="/EventCategory" />
+                <xsl:copy-of select="/EventLevel" />
+                <xsl:copy-of select="/UserName" />
+                <xsl:copy-of select="/Params" />
+              </xsl:element>
+            </xsl:template>
+          </xsl:stylesheet>
+        </OutputTransform>
+      </UIPageSet>
+    </UIPageSets>
+  </PresentationTypes>
+  <Presentation>
+    <FolderItems>
+      <FolderItem ID="Community.PowerShellMonitoring.FolderItem.Template.PowerShellEventCollection" ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.EventCollection" Folder="MSR!Microsoft.SystemCenter.RuleTemplates.Folder.Collection.Event"/>
+      <FolderItem ID="Community.PowerShellMonitoring.FolderItem.Template.PowerShellEventCollection.PowerShellBased" ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.EventCollection" Folder="Community.PowerShellMonitoring.Folders.Authoring.Rules.Collection.PowerShellBased"/>
+    </FolderItems>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.EventCollection">
+          <Name>PowerShell Script Event Collection Rule (Community)</Name>
+          <Description>Collect events generated by a PowerShell script.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.PageSet.Template.PowerShellEventCollection.Mapper" SubElementID="Title">
+          <Name>Map Event Data</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.PageSet.Template.PowerShellEventCollection.Mapper" SubElementID="TabName">
+          <Name>Event</Name>
+          <Description></Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

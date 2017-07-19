@@ -1,0 +1,17 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Presentation>
+    <Folders>
+      <Folder ID="Community.PowerShellMonitoring.Folders.Authoring.Monitors.Scripting.PowerShellBased" Accessibility="Internal" ParentFolder="SC!Microsoft.SystemCenter.Authoring.MonitorTypeFolder.Scripting" />
+    </Folders>    
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Folders.Authoring.Monitors.Scripting.PowerShellBased">
+          <Name>PowerShell Based</Name>
+          <Description>This folder contains monitors that generate alerts based on PowerShell scripts.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

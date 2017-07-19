@@ -1,0 +1,39 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "command": "C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\msbuild.exe",
+    "args": [
+        // Ask msbuild to generate full paths for file names.
+        "/property:GenerateFullPaths=true",
+        //Build in release x86 config
+        "/property:Configuration=Release",
+        "/property:Platform=x86"
+    ],
+    // Show the output window only if unrecognized errors occur.
+    "showOutput": "silent",
+    "suppressTaskName": true,
+    // Use the standard MS compiler pattern to detect errors, warnings and infos
+    "problemMatcher": "$msCompile",
+    "tasks": [
+        {
+            "taskName": "Build Solution",
+            "isBuildCommand": true,
+            "args": [
+                ".\\ManagementPacks\\Community.PowerShellTemplates\\Community.PowerShellTemplates.sln"
+            ]
+        },
+        {
+            "taskName": "Clean Solution",
+            "args":[
+                "/t:Clean"
+            ]
+        },
+        {
+            "taskName": "Rebuild Solution",
+            "args":[
+                "/t:Rebuild"
+            ]
+        }
+    ]
+}

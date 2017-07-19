@@ -1,0 +1,27 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Presentation>
+    <Folders>
+      <Folder ID="Community.PowerShellMonitoring.Folders.Authoring.Rules.Alert.PowerShellBased" Accessibility="Public" ParentFolder="MSR!Microsoft.SystemCenter.RuleTemplates.Folder.Alert" />
+      <Folder ID="Community.PowerShellMonitoring.Folders.Authoring.Rules.ScriptTriggers" Accessibility="Public" ParentFolder="SC!Microsoft.SystemCenter.Authoring.RuleTypeFolder.Root"/>
+      <Folder ID="Community.PowerShellMonitoring.Folders.Authoring.Rules.Collection.PowerShellBased" Accessibility="Public" ParentFolder="MSR!Microsoft.SystemCenter.RuleTemplates.Folder.Collection" />
+    </Folders>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Folders.Authoring.Rules.Alert.PowerShellBased">
+          <Name>PowerShell Based</Name>
+          <Description>This folder contains rule types that generate alerts based on PowerShell scripts.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Folders.Authoring.Rules.ScriptTriggers">
+          <Name>Triggered PowerShell Scripts</Name>
+          <Description>This folder contains rule types that run scripts based on triggers from various data providers.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Folders.Authoring.Rules.Collection.PowerShellBased">
+          <Name>PowerShell Based</Name>
+          <Description>This folder contains rule types that collect data from PowerShell scripts.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

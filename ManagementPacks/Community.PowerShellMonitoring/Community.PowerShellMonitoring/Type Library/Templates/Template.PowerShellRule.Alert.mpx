@@ -1,0 +1,308 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <Templates>
+    <Template ID="Community.PowerShellMonitoring.Template.PowerShellRule.Alert" Purpose="RuleCreation">
+      <Configuration>
+        <IncludeSchemaTypes>
+          <SchemaType>System!System.ExpressionEvaluatorSchema</SchemaType>
+          <SchemaType>Health!System.Health.AlertSchema</SchemaType>
+          <SchemaType>MSR!Microsoft.SystemCenter.RuleTemplates.ManagementPackCategoryType</SchemaType>
+          <SchemaType>MSR!Microsoft.SystemCenter.RuleTemplates.ManagementPackIdentifiers</SchemaType>
+        </IncludeSchemaTypes>
+        <xsd:element name="ID" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Name" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Enabled" type="xsd:boolean" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Description" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Target" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Category" type="ManagementPackCategoryType" />
+        <xsd:element name="LocaleId" type="ManagementPackLanguageIdentifier" />
+        <xsd:element name="IntervalSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="SyncTime" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="ScriptName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Arguments" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="ScriptBody" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="TimeoutSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="AlertExpression" type="ExpressionType" />
+        <xsd:element name="Priority" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="0" />
+              <xsd:maxInclusive value="2" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Severity" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:integer">
+              <xsd:minInclusive value="0" />
+              <xsd:maxInclusive value="2" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="AlertName" type="xsd:string" minOccurs="1" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="AlertDescription" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="AlertOwner" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="AlertParameters" type="System.Health.AlertParameters" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Suppression" type="System.Health.Suppression" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Custom1" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Custom2" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Custom3" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Custom4" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Custom5" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Custom6" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Custom7" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Custom8" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Custom9" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Custom10" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+      </Configuration>
+      <References>
+        <Reference ID="Self" />
+        <Reference ID="System" />
+        <Reference ID="Windows" />
+        <Reference ID="Health" />
+      </References>
+      <Implementation>
+        <Monitoring>
+          <Rules>
+            <Rule ID="$TemplateConfig/ID$" Target="$TemplateConfig/Target$" Enabled="$TemplateConfig/Enabled$">
+              <Category>$TemplateConfig/Category$</Category>
+              <DataSources>
+                <DataSource ID="DS" TypeID="$Reference/Self$Community.PowerShellMonitoring.DataSource.FilteredPowerShellPropertyBag">
+                  <IntervalSeconds>$TemplateConfig/IntervalSeconds$</IntervalSeconds>
+                  <SyncTime>$TemplateConfig/SyncTime$</SyncTime>
+                  <ScriptName>$TemplateConfig/ScriptName$</ScriptName>
+                  <Arguments>$TemplateConfig/Arguments$</Arguments>
+                  <ScriptBody>$TemplateConfig/ScriptBody$</ScriptBody>
+                  <TimeoutSeconds>$TemplateConfig/TimeoutSeconds$</TimeoutSeconds>
+                  <AlertExpression>$TemplateConfig/AlertExpression$</AlertExpression>
+                </DataSource>
+              </DataSources>
+              <WriteActions>
+                <WriteAction ID="Alert" TypeID="$Reference/Health$System.Health.GenerateAlert">
+                  <Priority>$TemplateConfig/Priority$</Priority>
+                  <Severity>$TemplateConfig/Severity$</Severity>
+                  <AlertName />
+                  <AlertDescription />
+                  <AlertOwner>$TemplateConfig/AlertOwner$</AlertOwner>
+                  <AlertMessageId>$MPElement[Name="$TemplateConfig/ID$.AlertMessage"]$</AlertMessageId>
+                  <AlertParameters>$TemplateConfig/AlertParameters$</AlertParameters>
+                  <Suppression>$TemplateConfig/Suppression$</Suppression>
+                  <Custom1>$TemplateConfig/Custom1$</Custom1>
+                  <Custom2>$TemplateConfig/Custom2$</Custom2>
+                  <Custom3>$TemplateConfig/Custom3$</Custom3>
+                  <Custom4>$TemplateConfig/Custom4$</Custom4>
+                  <Custom5>$TemplateConfig/Custom5$</Custom5>
+                  <Custom6>$TemplateConfig/Custom6$</Custom6>
+                  <Custom7>$TemplateConfig/Custom7$</Custom7>
+                  <Custom8>$TemplateConfig/Custom8$</Custom8>
+                  <Custom9>$TemplateConfig/Custom9$</Custom9>
+                  <Custom10>$TemplateConfig/Custom10$</Custom10>
+                </WriteAction>
+              </WriteActions>
+            </Rule>
+          </Rules>
+        </Monitoring>
+        <Presentation>
+          <StringResources>
+            <StringResource ID="$TemplateConfig/ID$.AlertMessage" />
+          </StringResources>
+        </Presentation>
+        <LanguagePacks>
+          <LanguagePack ID="$TemplateConfig/LocaleId$" IsDefault="true">
+            <DisplayStrings>
+              <DisplayString ElementID="$TemplateConfig/ID$">
+                <Name>$TemplateConfig/Name$</Name>
+                <Description>$TemplateConfig/Description$</Description>
+              </DisplayString>
+              <DisplayString ElementID="$TemplateConfig/ID$.AlertMessage">
+                <Name>$TemplateConfig/AlertName$</Name>
+                <Description>$TemplateConfig/AlertDescription$</Description>
+              </DisplayString>
+            </DisplayStrings>
+          </LanguagePack>
+        </LanguagePacks>
+      </Implementation>
+    </Template>
+  </Templates>
+  <PresentationTypes>
+    <UIPageSets>
+      <UIPageSet ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellAlert" TypeDefinitionID="Community.PowerShellMonitoring.Template.PowerShellRule.Alert">
+        <UIPageReferences>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellAlert.General" PageID="MSR!Microsoft.SystemCenter.RuleTemplates.RuleGeneralPage" Usage="CreationOnly">
+            <InputParameters />
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="Category">
+                    <xsl:copy>Alert</xsl:copy>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellAlert.Schedule" PageID="System!System.SimpleSchedulerPage" Usage="CreationOnly">
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="SimpleReccuringSchedule">
+                    <xsl:element name="Interval">
+                      <xsl:attribute name="Unit">Minutes</xsl:attribute>15
+                    </xsl:element>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellAlert.Script" PageID="Windows!Microsoft.Windows.ScriptPage" Usage="CreationOnly">
+            <InputParameters>
+              <ScriptName>MyScript.ps1</ScriptName>
+              <ScriptBody>$IncludeFileContent/Resources/Scripts/AlertRule.ps1$</ScriptBody>
+            </InputParameters>
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:copy-of select="/ScriptName" />
+                  <xsl:copy-of select="/Arguments" />
+                  <xsl:copy-of select="/ScriptBody" />
+                  <xsl:copy-of select="/TimeOutSeconds" />
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellAlert.AlertExpression" PageID="System!System.ExpressionBuilderPage" Usage="CreationOnly">
+            <InputParameters>
+              <DataType>System!System.PropertyBagData</DataType>
+            </InputParameters>
+            <InputTransform>
+              <xsl:stylesheet version="1.0">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:choose>
+                    <xsl:when test="count(/AlertExpression) &gt; 0">
+                      <xsl:element name="Expression">
+                        <xsl:copy-of select="/AlertExpression" />
+                      </xsl:element>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:element name="Expression">
+                        <xsl:element name="SimpleExpression">
+                          <xsl:element name="ValueExpression">
+                            <xsl:element name="XPathQuery">Property[@Name='Result']</xsl:element>
+                          </xsl:element>
+                          <xsl:element name="Operator">Equal</xsl:element>
+                          <xsl:element name="ValueExpression">
+                            <xsl:element name="Value">OverThreshold</xsl:element>
+                          </xsl:element>
+                        </xsl:element>
+                      </xsl:element>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+            <Title ID="Title" />
+            <TabName ID="TabName" />
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellAlert.AlertConfig" PageID="Health!System.Health.GenerateAlertModuleConfigPage" Usage="CreationOnly">
+            <InputParameters>
+              <DataType>System.PropertyBagData</DataType>
+            </InputParameters>
+            <InputTransform />
+          </UIPageReference>
+        </UIPageReferences>
+        <OutputTransform>
+          <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+            <xsl:template match="/">
+              <xsl:element name="Configuration">
+                <xsl:copy-of select="/ID" />
+                <xsl:copy-of select="/Name" />
+                <xsl:copy-of select="/Enabled" />
+                <xsl:copy-of select="/Description" />
+                <xsl:copy-of select="/Target" />
+                <xsl:copy-of select="/Category" />
+                <xsl:copy-of select="/LocaleId" />
+                <xsl:element name="IntervalSeconds">
+                  <xsl:variable name="RawInterval" select="/SimpleReccuringSchedule/Interval" />
+                  <xsl:variable name="Units" select="/SimpleReccuringSchedule/Interval/@Unit" />
+                  <xsl:choose>
+                    <xsl:when test="not(boolean($Units)) or $Units='Seconds'">
+                      <xsl:value-of select="$RawInterval" />
+                    </xsl:when>
+                    <xsl:when test="$Units='Minutes'">
+                      <xsl:value-of select="$RawInterval*60" />
+                    </xsl:when>
+                    <xsl:when test="$Units='Hours'">
+                      <xsl:value-of select="$RawInterval*3600" />
+                    </xsl:when>
+                    <xsl:when test="$Units='Days'">
+                      <xsl:value-of select="$RawInterval*86400" />
+                    </xsl:when>
+                  </xsl:choose>
+                </xsl:element>
+                <xsl:element name="SyncTime">
+                  <xsl:value-of select="/SimpleReccuringSchedule/SyncTime" />
+                </xsl:element>
+                <xsl:element name="ScriptName">
+                  <xsl:value-of select="/ScriptName[1]" />
+                </xsl:element>
+                <xsl:element name="Arguments">
+                  <xsl:value-of select="/Arguments[1]" />
+                </xsl:element>
+                <xsl:element name="ScriptBody">
+                  <xsl:value-of select="/ScriptBody[1]" />
+                </xsl:element>
+                <xsl:element name="TimeoutSeconds">
+                  <xsl:value-of select="/TimeoutSeconds[1]" />
+                </xsl:element>
+                <xsl:element name="AlertExpression">
+                  <xsl:copy-of select="/Expression[1]/*" />
+                </xsl:element>
+                <xsl:copy-of select="/Priority" />
+                <xsl:copy-of select="/Severity" />
+                <xsl:copy-of select="/AlertName" />
+                <xsl:copy-of select="/AlertDescription" />
+                <xsl:copy-of select="/AlertOwner" />
+                <xsl:copy-of select="/AlertParameters" />
+                <xsl:copy-of select="/Suppression" />
+                <xsl:copy-of select="/Custom1" />
+                <xsl:copy-of select="/Custom2" />
+                <xsl:copy-of select="/Custom3" />
+                <xsl:copy-of select="/Custom4" />
+                <xsl:copy-of select="/Custom5" />
+                <xsl:copy-of select="/Custom6" />
+                <xsl:copy-of select="/Custom7" />
+                <xsl:copy-of select="/Custom8" />
+                <xsl:copy-of select="/Custom9" />
+                <xsl:copy-of select="/Custom10" />
+              </xsl:element>
+            </xsl:template>
+          </xsl:stylesheet>
+        </OutputTransform>
+      </UIPageSet>
+    </UIPageSets>
+  </PresentationTypes>
+  <Presentation>    
+    <FolderItems>
+      <FolderItem ID="Community.PowerShellMonitoring.FolderItem.Template.PowerShellAlert" ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.Alert" Folder="Community.PowerShellMonitoring.Folders.Authoring.Rules.Alert.PowerShellBased"/>
+    </FolderItems>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.Alert">
+          <Name>PowerShell Script Alert Generating Rule (Community)</Name>
+          <Description>Generate alerts if the output of a given PowerShell script matches a criteria</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.PageSet.Template.PowerShellAlert.AlertExpression" SubElementID="Title">
+          <Name>Criteria</Name>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.PageSet.Template.PowerShellAlert.AlertExpression" SubElementID="TabName">
+          <Name>Criteria</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

@@ -1,0 +1,165 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Templates>
+    <Template ID="Community.PowerShellMonitoring.Template.PowerShellRule.TimedScript" Purpose="RuleCreation">
+      <Configuration>
+        <IncludeSchemaTypes>
+          <SchemaType>System!System.ExpressionEvaluatorSchema</SchemaType>
+          <SchemaType>System!System.CommandExecuterSchema</SchemaType>
+        </IncludeSchemaTypes>
+        <xsd:element name="ID" type="xsd:string" />
+        <xsd:element name="Name" type="xsd:string" />
+        <xsd:element name="Enabled" type="xsd:string" />
+        <xsd:element name="Description" type="xsd:string" />
+        <xsd:element name="Target" type="xsd:string" />
+        <xsd:element name="Category" type="xsd:string" />
+        <xsd:element name="LocaleId" type="xsd:string" />
+        <xsd:element name="Scheduler" type="PublicSchedulerType" />
+        <xsd:element name="ScriptName" type="xsd:string" />
+        <xsd:element name="Arguments" type="xsd:string" />
+        <xsd:element name="ScriptBody" type="xsd:string" />
+        <xsd:element name="TimeoutSeconds" type="xsd:integer" />
+      </Configuration>
+      <References>
+        <Reference ID="Self" />
+        <Reference ID="System" />
+        <Reference ID="Windows" />
+      </References>
+      <Implementation>
+        <Monitoring>
+          <Rules>
+            <Rule ID="$TemplateConfig/ID$" Target="$TemplateConfig/Target$" Enabled="$TemplateConfig/Enabled$">
+              <Category>$TemplateConfig/Category$</Category>
+              <DataSources>
+                <DataSource ID="Scheduler" TypeID="$Reference/System$System.Scheduler">
+                  <Scheduler>$TemplateConfig/Scheduler$</Scheduler>
+                </DataSource>
+              </DataSources>
+              <WriteActions>
+                <WriteAction ID="ExecuteScript" TypeID="$Reference/Self$Community.PowerShellMonitoring.WriteAction.SimplePowerShellScript">                  
+                  <ScriptName>$TemplateConfig/ScriptName$</ScriptName>
+                  <Arguments>$TemplateConfig/Arguments$</Arguments>
+                  <ScriptBody>$TemplateConfig/ScriptBody$</ScriptBody>
+                  <TimeoutSeconds>$TemplateConfig/TimeoutSeconds$</TimeoutSeconds>
+                </WriteAction>
+              </WriteActions>
+            </Rule>
+          </Rules>
+        </Monitoring>
+        <LanguagePacks>
+          <LanguagePack ID="$TemplateConfig/LocaleId$" IsDefault="true">
+            <DisplayStrings>
+              <DisplayString ElementID="$TemplateConfig/ID$">
+                <Name>$TemplateConfig/Name$</Name>
+                <Description>$TemplateConfig/Description$</Description>
+              </DisplayString>
+            </DisplayStrings>
+          </LanguagePack>
+        </LanguagePacks>
+      </Implementation>
+    </Template>
+  </Templates>
+  <PresentationTypes>
+    <UIPageSets>
+      <UIPageSet ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellTimedScript" TypeDefinitionID="Community.PowerShellMonitoring.Template.PowerShellRule.TimedScript">
+        <UIPageReferences>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellTimedScript.General" PageID="MSR!Microsoft.SystemCenter.RuleTemplates.RuleGeneralPage" Usage="CreationOnly">
+            <InputParameters />
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="Category">
+                    <xsl:copy>Custom</xsl:copy>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellTimedScript.Schedule" PageID="System!System.SchedulerPage" Usage="CreationOnly">
+            <InputParameters />
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="SimpleReccuringSchedule">
+                    <xsl:element name="Interval">
+                      <xsl:attribute name="Unit">Minutes</xsl:attribute>15
+                    </xsl:element>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.PowerShellTimedScript.Script" PageID="Windows!Microsoft.Windows.ScriptPage" Usage="CreationOnly">
+            <InputParameters>
+              <ScriptName>MyScript.ps1</ScriptName>
+              <ScriptBody>$IncludeFileContent/Resources/Scripts/ParamOnly.ps1$</ScriptBody>
+            </InputParameters>            
+            <InputTransform />
+          </UIPageReference>
+        </UIPageReferences>
+        <OutputTransform>
+          <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+            <xsl:template match="/">
+              <xsl:element name="Configuration">
+                <xsl:copy-of select="/ID" />
+                <xsl:copy-of select="/Name" />
+                <xsl:copy-of select="/Enabled" />
+                <xsl:copy-of select="/Description" />
+                <xsl:copy-of select="/Target" />
+                <xsl:copy-of select="/Category" />
+                <xsl:copy-of select="/LocaleId" />
+                <xsl:element name="Scheduler">
+                  <xsl:copy-of select="/SimpleReccuringSchedule" />
+                  <xsl:copy-of select="/WeeklySchedule" />
+                  <xsl:copy-of select="/ExcludeDates" />
+                </xsl:element>
+                <xsl:copy-of select="/ScriptName" />
+                <xsl:copy-of select="/Arguments" />
+                <xsl:copy-of select="/ScriptBody" />
+                <xsl:copy-of select="/TimeoutSeconds" />
+              </xsl:element>
+            </xsl:template>
+          </xsl:stylesheet>
+        </OutputTransform>
+      </UIPageSet>
+      <UIPageSet ID="Community.PowerShellMonitoring.PageSet.WriteAction.PowerShell" TypeDefinitionID="Windows!Microsoft.Windows.PowerShellWriteAction">
+        <UIPageReferences>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.WriteAction.PowerShell.Script" PageID="Windows!Microsoft.Windows.ScriptPage">
+            <InputParameters />
+            <InputTransform />
+            <Title ID="Microsoft.Windows.ScriptWriteActionPageSet.PageReference1.Title" />
+            <TabName ID="Microsoft.Windows.ScriptWriteActionPageSet.PageReference1.TabName" />
+          </UIPageReference>
+        </UIPageReferences>
+        <OutputTransform>
+          <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+            <xsl:template match="/">
+              <xsl:copy-of select="/ScriptName" />
+              <xsl:copy-of select="/Arguments" />
+              <xsl:copy-of select="/ScriptBody" />
+              <xsl:copy-of select="/TimeoutSeconds" />
+            </xsl:template>
+          </xsl:stylesheet>
+        </OutputTransform>
+      </UIPageSet>
+    </UIPageSets>
+  </PresentationTypes>
+  <Presentation>
+    <FolderItems>
+      <FolderItem ID="Community.PowerShellMonitoring.FolderItem.Template.PowerShellRule.TimedScript.TimedFolder" ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.TimedScript" Folder="MSR!Microsoft.SystemCenter.RuleTemplates.Folder.Timed"/>      
+    </FolderItems>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.TimedScript">
+          <Name>Run a PowerShell Script (community)</Name>
+          <Description>Execute a given PowerShell script on an interval.  Contributed by the Community PowerShell Templates MP.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

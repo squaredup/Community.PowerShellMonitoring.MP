@@ -1,0 +1,186 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <Templates>
+    <Template ID="Community.PowerShellMonitoring.Template.PowerShellRule.EventTriggeredScript" Purpose="RuleCreation">
+      <Configuration>
+        <IncludeSchemaTypes>
+          <SchemaType>Windows!Microsoft.Windows.ComputerNameSchema</SchemaType>
+          <SchemaType>System!System.ExpressionEvaluatorSchema</SchemaType>
+          <SchemaType>MSR!Microsoft.SystemCenter.RuleTemplates.ManagementPackCategoryType</SchemaType>
+          <SchemaType>MSR!Microsoft.SystemCenter.RuleTemplates.ManagementPackIdentifiers</SchemaType>
+        </IncludeSchemaTypes>
+        <xsd:element name="ID" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Name" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Enabled" type="xsd:boolean" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Description" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Target" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Category" type="ManagementPackCategoryType" />
+        <xsd:element name="LocaleId" type="ManagementPackLanguageIdentifier" />
+        <xsd:element name="ComputerName" type="ComputerNameType" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="LogName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Expression" type="ExpressionType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="ScriptName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="Arguments" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="ScriptBody" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="TimeoutSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+      </Configuration>
+      <References>
+        <Reference ID="Self" />
+        <Reference ID="System" />
+        <Reference ID="Windows" />
+      </References>
+      <Implementation>
+        <Monitoring>
+          <Rules>
+            <Rule ID="$TemplateConfig/ID$" Target="$TemplateConfig/Target$" Enabled="$TemplateConfig/Enabled$">
+              <Category>$TemplateConfig/Category$</Category>
+              <DataSources>
+                <DataSource ID="DS" TypeID="$Reference/Windows$Microsoft.Windows.EventProvider">
+                  <ComputerName>$TemplateConfig/ComputerName$</ComputerName>
+                  <LogName>$TemplateConfig/LogName$</LogName>
+                  <Expression>$TemplateConfig/Expression$</Expression>
+                </DataSource>
+              </DataSources>
+              <WriteActions>
+                <WriteAction ID="ExecuteScript" TypeID="$Reference/Self$Community.PowerShellMonitoring.WriteAction.SimplePowerShellScript">
+                  <ScriptName>$TemplateConfig/ScriptName$</ScriptName>
+                  <Arguments>$TemplateConfig/Arguments$</Arguments>
+                  <ScriptBody>$TemplateConfig/ScriptBody$</ScriptBody>
+                  <TimeoutSeconds>$TemplateConfig/TimeoutSeconds$</TimeoutSeconds>
+                </WriteAction>
+              </WriteActions>
+            </Rule>
+          </Rules>
+        </Monitoring>
+        <LanguagePacks>
+          <LanguagePack ID="$TemplateConfig/LocaleId$" IsDefault="true">
+            <DisplayStrings>
+              <DisplayString ElementID="$TemplateConfig/ID$">
+                <Name>$TemplateConfig/Name$</Name>
+                <Description>$TemplateConfig/Description$</Description>
+              </DisplayString>
+            </DisplayStrings>
+          </LanguagePack>
+        </LanguagePacks>
+      </Implementation>
+    </Template>
+  </Templates>
+  <PresentationTypes>
+    <UIPageSets>
+      <UIPageSet ID="Community.PowerShellMonitoring.PageSet.Template.EventTriggeredScript" TypeDefinitionID="Community.PowerShellMonitoring.Template.PowerShellRule.EventTriggeredScript">
+        <UIPageReferences>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.EventTriggeredScript.General" PageID="MSR!Microsoft.SystemCenter.RuleTemplates.RuleGeneralPage" Usage="CreationOnly">
+            <InputParameters />
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="Category">
+                    <xsl:copy>Custom</xsl:copy>
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.EventTriggeredScript.EventLogName" PageID="Windows!Microsoft.Windows.EventLogNamePage" Usage="CreationOnly">
+            <InputParameters />
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:copy-of select="/ComputerName" />
+                  <xsl:copy-of select="/LogName" />
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.EventTriggeredScript.EventFilter" PageID="System!System.ExpressionBuilderPage" Usage="CreationOnly">
+            <InputParameters>
+              <DataType>System.Event.Data</DataType>
+            </InputParameters>
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:copy-of select="/Expression" />
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+            <Title ID="Title" />
+            <TabName ID="TabName" />
+          </UIPageReference>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Template.EventTriggeredScript.Script" PageID="Windows!Microsoft.Windows.ScriptPage" Usage="CreationOnly">
+            <InputParameters>
+              <ScriptName>MyScript.ps1</ScriptName>
+              <ScriptBody>$IncludeFileContent/Resources/Scripts/ParamOnly.ps1$</ScriptBody>
+            </InputParameters>
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:copy-of select="/ScriptName" />
+                  <xsl:copy-of select="/Arguments" />
+                  <xsl:copy-of select="/ScriptBody" />
+                  <xsl:copy-of select="/TimeOutSeconds" />
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+          </UIPageReference>
+        </UIPageReferences>
+        <OutputTransform>
+          <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+            <xsl:template match="/">
+              <xsl:element name="Configuration">
+                <xsl:copy-of select="/ID" />
+                <xsl:copy-of select="/Name" />
+                <xsl:copy-of select="/Enabled" />
+                <xsl:copy-of select="/Description" />
+                <xsl:copy-of select="/Target" />
+                <xsl:copy-of select="/Category" />
+                <xsl:copy-of select="/LocaleId" />
+                <xsl:copy-of select="/ComputerName" />
+                <xsl:copy-of select="/LogName" />
+                <xsl:element name="Expression">
+                  <xsl:copy-of select="/Expression[1]/*" />
+                </xsl:element>
+                <xsl:element name="ScriptName">
+                  <xsl:value-of select="/ScriptName[1]" />
+                </xsl:element>
+                <xsl:element name="Arguments">
+                  <xsl:value-of select="/Arguments[1]" />
+                </xsl:element>
+                <xsl:element name="ScriptBody">
+                  <xsl:value-of select="/ScriptBody[1]" />
+                </xsl:element>
+                <xsl:element name="TimeoutSeconds">
+                  <xsl:value-of select="/TimeoutSeconds[1]" />
+                </xsl:element>
+              </xsl:element>
+            </xsl:template>
+          </xsl:stylesheet>
+        </OutputTransform>
+      </UIPageSet>
+    </UIPageSets>
+  </PresentationTypes>
+  <Presentation>
+    <FolderItems>
+      <FolderItem ID="Community.PowerShellMonitoring.FolderItem.Template.Rule.EventTriggeredPowerShell" ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.EventTriggeredScript" Folder="Community.PowerShellMonitoring.Folders.Authoring.Rules.ScriptTriggers"/>
+    </FolderItems>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Template.PowerShellRule.EventTriggeredScript">
+          <Name>Run a PowerShell Script on an event (Community)</Name>
+          <Description>Execute a PowerShell script if the given Windows NT event is found.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.PageSet.Template.EventTriggeredScript.EventFilter" SubElementID="Title">
+          <Name>Event Filter</Name>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.PageSet.Template.EventTriggeredScript.EventFilter" SubElementID="TabName">
+          <Name>Event Filter</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

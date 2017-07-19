@@ -1,0 +1,109 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+      <ProbeActionModuleType ID="Community.PowerShellMonitoring.Probe.SimplePowerShellScript" Accessibility="Public">
+        <Configuration>
+          <xsd:element name="ScriptName" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="Arguments" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="ScriptBody" type="xsd:string" minOccurs="1" maxOccurs="1" />
+          <xsd:element name="TimeoutSeconds" type="xsd:integer" minOccurs="1" maxOccurs="1" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="Arguments" Selector="$Config/Arguments$" ParameterType="string" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+        </OverrideableParameters>
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <ProbeAction ID="ExecuteScript" TypeID="Windows!Microsoft.Windows.PowerShellProbe">
+                <ScriptName>$Config/ScriptName$</ScriptName>
+                <ScriptBody>$Config/ScriptBody$</ScriptBody>
+                <Parameters>
+                  <Parameter>
+                    <Name>Arguments</Name>
+                    <Value>$Config/Arguments$</Value>
+                  </Parameter>
+                </Parameters>
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="ExecuteScript"/>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>Windows!Microsoft.Windows.SerializedObjectData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
+    </ModuleTypes>
+  </TypeDefinitions>
+  <PresentationTypes>
+    <UIPageSets>
+      <UIPageSet ID="Community.PowerShellMonitoring.PageSet.Probe.SimplePowerShellScript" TypeDefinitionID="Community.PowerShellMonitoring.Probe.SimplePowerShellScript">
+        <UIPageReferences>
+          <UIPageReference ID="Community.PowerShellMonitoring.PageSet.Probe.SimplePowerShellScript.Script" PageID="Windows!Microsoft.Windows.ScriptPage">
+            <InputParameters>
+              <ScriptName>MyScript.ps1</ScriptName>
+              <ScriptBody>$IncludeFileContent/Resources/Scripts/ParamOnly.ps1$</ScriptBody>
+            </InputParameters>
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:copy-of select="/ScriptName" />
+                  <xsl:copy-of select="/Arguments" />
+                  <xsl:copy-of select="/ScriptBody" />
+                  <xsl:copy-of select="/TimeoutSeconds" />
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+            <Title ID="Title" />
+            <TabName ID="TabName" />
+          </UIPageReference>
+        </UIPageReferences>
+        <OutputTransform>
+          <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+            <xsl:template match="/">
+              <xsl:element name="ScriptName">
+                <xsl:value-of select="/ScriptName[1]" />
+              </xsl:element>
+              <xsl:element name="Arguments">
+                <xsl:value-of select="/Arguments[1]" />
+              </xsl:element>
+              <xsl:element name="ScriptBody">
+                <xsl:value-of select="/ScriptBody[1]" />
+              </xsl:element>
+              <xsl:element name="TimeoutSeconds">
+                <xsl:value-of select="/TimeoutSeconds[1]" />
+              </xsl:element>
+            </xsl:template>
+          </xsl:stylesheet>
+        </OutputTransform>
+      </UIPageSet>
+    </UIPageSets>
+  </PresentationTypes>
+  <Presentation>
+    <FolderItems>
+      <FolderItem ID="Community.PowerShellMonitoring.FolderItem.Template.PowerShellDiagnostic.Script" ElementID="Community.PowerShellMonitoring.Probe.SimplePowerShellScript" Folder="SC!Microsoft.SystemCenter.Authoring.DiagnosticsFolder.Root"/>
+    </FolderItems>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Probe.SimplePowerShellScript">
+          <Name>Run a PowerShell script (Community)</Name>
+          <Description>Executes a simple PowerShell script that should not make any changes.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Probe.SimplePowerShellScript" SubElementID="Arguments">
+          <Name>Arguments</Name>
+          <Description>The arguments passed to the PowerShell script (as a single string).</Description>
+        </DisplayString>
+        <DisplayString ElementID="Community.PowerShellMonitoring.Probe.SimplePowerShellScript" SubElementID="TimeoutSeconds">
+          <Name>Timeout (Seconds)</Name>
+          <Description>The number of seconds after which the script is terminated.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>
