@@ -4,7 +4,7 @@
 
 The PowerShell Monitoring Management pack extends Microsoft Systems Center Operations Manager (SCOM) to allow creation of PowerShell based monitors, rules, tasks, diagnostics and recoveries directly from the SCOM console using the Authoring tab.  No MP authoring knowledge is required to create these - authors can leverage their existing scripts and the UI contains the samples they need to modify them to work with SCOM.
 
-To make use of these Management packs, you will need SCOM installed and configured, monitoring your environment.  From that point all you need is enough knowledge of PowerShell scripting to accomplish whatever monitoring tasks are required.
+To make use of this Management pack, you will need SCOM installed and configured, monitoring your environment.  From that point all you need is enough knowledge of PowerShell scripting to accomplish whatever monitoring tasks are required.
 
 ## Getting started
 
@@ -45,7 +45,21 @@ The following table displays all templates added by this management pack:
 
 Each template allows you to specify a script, and dynamically insert arguments based on the workflow target.  Each template includes a sample script that already has the necessary boilerplate to work with the SCOM API, so no prior knowledge is necessary.  Scripts will not be checked for correctness by the template however, so ensure you have thoroughly tested them prior to using the templates.
 
-Arguments are passed to the script as a _single string_, so if you need to pass multiple arguments you should use the `String` `.Split` method with an appropriate separator to convert `$Arguments` into an array.  Remember that you can also insert values from the Targeted class anywhere into the script (i.e. into unique variables in the script body) so the main purpose of injecting values via arguments is for overrides (since the Arguments value is overridable in all templates).
+Arguments are passed to the script as a _single string_, so if you need to pass multiple arguments you should use the `String` `.Split` method with an appropriate separator to convert `$Arguments` into an array.  Remember that you can also insert values from the Targeted class anywhere into the script (i.e. into unique variables in the script body) so the main purpose of injecting values via arguments is for overrides (since the Arguments value can be overridden in all templates).
+
+### PowerShell Versions
+
+The PowerShell MP does not define or control which version of PowerShell will execute any given script - this is determined at runtime by SCOM on each agent.  This means if all of your servers have PowerShell v4 installed you can write scripts with that minimum version in mind, otherwise you will need to target the lowest version in your environment. We would suggest testing any scripts you may write against that version to ensure the widest compatibility, prior to adding them to SCOM.
+
+As a reminder, Windows Server 2008 R2 shipped with PowerShell v2 installed and enabled by default, so that is generally a good target.
+
+### Performance and Scaling
+
+The workflows created by this management pack support a SCOM feature called [Cookdown](https://technet.microsoft.com/en-gb/library/ff381335.aspx) which enables scripts (or any data source) which would be run many times to instead be run once, and the output data shared. In order for this to function however, all instances of that script must be *exactly* the same, and have *exactly the same input values* (including schedule, overrides etc).
+
+In practice what this means is that if you need to monitor a class that appears multiple times on an agent (such as a database), and collect performance information as well, you should ensure your script supports Cookdown.  To do this, rather than having your script make use of identifiers (such as the DB name, either hard-coded or via a `$Target/` reference) instead have the script locate and provide data for *all* instances at the same time (making sure to provide the ID of each item along with the monitoring data).
+
+This can then safely be filtered outside the script, in the Criteria/Mapper sections of the templates, so that each instance of the monitor only examines the health state of it's appropriate object.
 
 ## Samples
 
