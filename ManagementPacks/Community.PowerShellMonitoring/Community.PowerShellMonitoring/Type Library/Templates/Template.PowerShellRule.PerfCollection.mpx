@@ -17,7 +17,7 @@
         <xsd:element name="TimeoutSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
         <xsd:element name="ObjectName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
         <xsd:element name="CounterName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
-        <xsd:element name="InstanceName" type="xsd:string" minOccurs="0" maxOccurs="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="InstanceName" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
         <xsd:element name="Value" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
       </Configuration>
       <References>
