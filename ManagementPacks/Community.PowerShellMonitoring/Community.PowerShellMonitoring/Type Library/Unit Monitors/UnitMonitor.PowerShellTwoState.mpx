@@ -65,6 +65,18 @@
               </Node>
             </RegularDetection>
           </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Healthy">
+              <Node ID="HealthyFilter">
+                <Node ID="Probe" />
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Unhealthy">
+              <Node ID="UnhealthyFilter">
+                <Node ID="Probe" />
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
         </MonitorImplementation>
       </UnitMonitorType>
     </MonitorTypes>
